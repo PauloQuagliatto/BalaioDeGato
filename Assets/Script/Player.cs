@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
 	[Header("Velocidade")]
 	public float moveSpeed = 10;
 	public float jumpForce = 100;
+	private float direction = 1;
 
 	[Header("Trigging")]
 	public PlayerState currentState = PlayerState.IDDLE;
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour
 	public float rayDistance = 1.18f;
 
 	[Header("Interação")]
+	public LayerMask layerMaskObjects;
 	public Vector3 interactionPosition;
 	public float interactionRange;
 
@@ -53,8 +55,20 @@ public class Player : MonoBehaviour
 		float horizontalAxis = Input.GetAxis("Horizontal");
 		transform.Translate(horizontalAxis * moveSpeed * Time.deltaTime, 0, 0);
 		if (Input.GetButtonDown("Jump") && HasColliderBottom()) Jump();
-	
+		if (Input.GetButtonDown("Fire1")) Hit();
+
 		FlipDirection(horizontalAxis);
+	}
+
+	private void Hit()
+	{
+		Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position+interactionPosition, interactionRange, layerMaskObjects);
+		Debug.Log(colliders.Length);
+		foreach(Collider2D collider in colliders)
+		{
+			InteragableObject interagableObject = collider.GetComponent<InteragableObject>();
+			interagableObject.ApplyForce(transform.position + interactionPosition, direction);
+		}
 	}
 
 
@@ -64,7 +78,7 @@ public class Player : MonoBehaviour
 	/// <param name="horizontalValue">Valor da axi horizontal</param>
 	private void FlipDirection(float horizontalValue)
 	{
-		float direction = transform.localScale.x;
+		direction = transform.localScale.x;
 		if (horizontalValue != 0)
 		{
 			direction = horizontalValue < 0.0f ? -1 : 1;
