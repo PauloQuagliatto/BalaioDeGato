@@ -7,6 +7,7 @@ public class InteragableObject : MonoBehaviour
 {
 
 	private Rigidbody2D myRigidbody2D;
+	public Vector2 force;
 
 	void Start()
 	{
@@ -21,5 +22,16 @@ public class InteragableObject : MonoBehaviour
 	{
 		if (value) myRigidbody2D.velocity = Vector2.zero;
 		myRigidbody2D.isKinematic = value;
+	}
+
+	/// <summary>
+	/// Aplica uma força baseado em uma posição
+	/// </summary>
+	/// <param name="position"></param>
+	public void ApplyForce(Vector2 position, float direction)
+	{
+		Vector2 targetForce = force;
+		targetForce.x *= direction;
+		myRigidbody2D.AddForceAtPosition(targetForce, position);
 	}
 }
