@@ -60,10 +60,12 @@ public class Player : MonoBehaviour
 		FlipDirection(horizontalAxis);
 	}
 
+	/// <summary>
+	/// Aplica um efeito nos elementos que estiverem no raio de colisão
+	/// </summary>
 	private void Hit()
 	{
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position+interactionPosition, interactionRange, layerMaskObjects);
-		Debug.Log(colliders.Length);
 		foreach(Collider2D collider in colliders)
 		{
 			InteragableObject interagableObject = collider.GetComponent<InteragableObject>();
@@ -120,6 +122,9 @@ public class Player : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Utilizamos o Gizmoz do unity para debugar os raios de colisao
+	/// </summary>
 	private void OnDrawGizmos()
 	{
 		Vector3 targetRayPosition = transform.position - (transform.up * rayDistance);
