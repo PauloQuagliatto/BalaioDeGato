@@ -13,16 +13,20 @@ public class Player : MonoBehaviour
 		DIE
 	}
 
-	[Header("Configurações de velocidade")]
+	[Header("Velocidade")]
 	public float moveSpeed = 10;
 	public float jumpForce = 100;
 
-	[Header("Configurações de trigging")]
+	[Header("Trigging")]
 	public PlayerState currentState = PlayerState.IDDLE;
 	public LayerMask layer;
 	public float rayDistance = 1.18f;
 
-	[Header("Cconfigurações visuais")]
+	[Header("Interação")]
+	public Vector3 interactionPosition;
+	public float interactionRange;
+
+	[Header("Visuais")]
 	public Transform graphicsRenderer;
 
 	private Rigidbody2D myRigidbody2D;
@@ -60,9 +64,17 @@ public class Player : MonoBehaviour
 	/// <param name="horizontalValue">Valor da axi horizontal</param>
 	private void FlipDirection(float horizontalValue)
 	{
-		float scaleX = transform.localScale.x;
-		if (horizontalValue != 0) scaleX = horizontalValue < 0 ? -1 : 1;
-		transform.localScale = new Vector3(scaleX, 1, 1);
+		float direction = transform.localScale.x;
+		if (horizontalValue != 0)
+		{
+			direction = horizontalValue < 0.0f ? -1 : 1;
+			interactionPosition.x = Mathf.Abs(interactionPosition.x);
+
+			if (interactionPosition.x > 0 && direction < 0)
+				interactionPosition.x *= direction;
+
+		}
+		transform.localScale = new Vector3(direction, 1, 1);
 	}
 
 	/// <summary>
@@ -96,8 +108,13 @@ public class Player : MonoBehaviour
 
 	private void OnDrawGizmos()
 	{
-		Vector3 targetPosition = transform.position - (transform.up * rayDistance);
+		Vector3 targetRayPosition = transform.position - (transform.up * rayDistance);
 		// Desenha a linha de debug do raycast
-		Gizmos.DrawLine(transform.position, targetPosition);
+		Gizmos.color = Color.green;
+		Gizmos.DrawLine(transform.position, targetRayPosition);
+
+		// Desenha o debug da area de interação
+		Gizmos.color = Color.blue;
+		Gizmos.DrawWireSphere(transform.position + interactionPosition, interactionRange);
 	}
 }
