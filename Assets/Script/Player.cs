@@ -18,12 +18,14 @@ public class Player : MonoBehaviour
 	public float jumpForce = 100;
 
 	[Header("Configurações de trigging")]
+	public PlayerState currentState = PlayerState.IDDLE;
 	public LayerMask layer;
 	public float rayDistance = 1.18f;
 
-	private Rigidbody2D myRigidbody2D;
+	[Header("Cconfigurações visuais")]
+	public Transform graphicsRenderer;
 
-	public PlayerState currentState = PlayerState.IDDLE;
+	private Rigidbody2D myRigidbody2D;
 
 	private void Start()
 	{
@@ -44,8 +46,23 @@ public class Player : MonoBehaviour
 	/// </summary>
 	private void Move()
 	{
+		float horizontalAxis = Input.GetAxis("Horizontal");
+		transform.Translate(horizontalAxis * moveSpeed * Time.deltaTime, 0, 0);
 		if (Input.GetButtonDown("Jump") && HasColliderBottom()) Jump();
-		transform.Translate(Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime, 0, 0);
+	
+		FlipDirection(horizontalAxis);
+	}
+
+
+	/// <summary>
+	/// Altera a escala x do objeto atual para dar um flip em todos os elementos
+	/// </summary>
+	/// <param name="horizontalValue">Valor da axi horizontal</param>
+	private void FlipDirection(float horizontalValue)
+	{
+		float scaleX = transform.localScale.x;
+		if (horizontalValue != 0) scaleX = horizontalValue < 0 ? -1 : 1;
+		transform.localScale = new Vector3(scaleX, 1, 1);
 	}
 
 	/// <summary>
