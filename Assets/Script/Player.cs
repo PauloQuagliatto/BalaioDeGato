@@ -9,7 +9,6 @@ public class Player : MonoBehaviour
 	{
 		IDDLE,
 		MOVE,
-		JUMP,
 		INTERACT,
 		DIE
 	}
@@ -19,18 +18,16 @@ public class Player : MonoBehaviour
 	public float jumpForce = 100;
 
 	[Header("Configurações de trigging")]
-	public float groundRayDistance = 3;
+	public LayerMask layer;
+	public float rayDistance = 1.18f;
 
-	private Rigidbody2D rigidbody2D;
-
-	// flags
-	private bool inGround = false;
+	private Rigidbody2D myRigidbody2D;
 
 	public PlayerState currentState = PlayerState.IDDLE;
 
 	private void Start()
 	{
-		rigidbody2D = GetComponent<Rigidbody2D>();
+		myRigidbody2D = GetComponent<Rigidbody2D>();
 	}
 
 	/// <summary>
@@ -47,25 +44,32 @@ public class Player : MonoBehaviour
 	/// </summary>
 	private void Move()
 	{
+		if (Input.GetButtonDown("Jump") && HasColliderBottom()) Jump();
 		transform.Translate(Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime, 0, 0);
-		if (Input.GetButtonDown("Jump")) Jump();
 	}
 
 	/// <summary>
-	/// Faz o player dar um pulo
+	/// Aplica uma força no eixo y do rigidbody, fazendo que o o player salte
 	/// </summary>
 	private void Jump()
 	{
-		rigidbody2D.velocity = new Vector2(0, 0);
-		rigidbody2D.AddForce(new Vector2(0, jumpForce * Time.deltaTime), ForceMode2D.Impulse);
+		myRigidbody2D.velocity = new Vector2(myRigidbody2D.velocity.x, 0);
+		myRigidbody2D.AddForce(new Vector2(0, jumpForce * Time.deltaTime), ForceMode2D.Impulse);
 	}
 
-	private void CheckIsInGround()
+	/// <summary>
+	/// Verifica se possui algum collider embaixo, respeitando a layermask definida
+	/// </summary>
+	/// <returns>Se o player está no chão ou não</returns>
+	private bool HasColliderBottom()
 	{
-		// RayCastHit2D hit = Physics2D.Raycast(transform.position, transform.position * (Vector2.up * groundRayDistance), groundRayDistance);
+		Vector3 targetPosition = transform.position - (transform.up * rayDistance);
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, targetPosition, rayDistance, layer);
+
+		return hit.collider != null;
 	}
 
-	void FixedUpdate()
+	void Update()
 	{
 		switch (currentState)
 		{
@@ -75,10 +79,8 @@ public class Player : MonoBehaviour
 
 	private void OnDrawGizmos()
 	{
+		Vector3 targetPosition = transform.position - (transform.up * rayDistance);
 		// Desenha a linha de debug do raycast
-		Gizmos.DrawLine(transform.position, transform.position * (Vector2.up * groundRayDistance));
+		Gizmos.DrawLine(transform.position, targetPosition);
 	}
-
-
-
 }
