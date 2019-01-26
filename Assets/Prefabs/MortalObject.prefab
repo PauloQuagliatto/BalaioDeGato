@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5680938452916182006}
   - component: {fileID: 860671640313814424}
   - component: {fileID: 7214176037987853156}
-  - component: {fileID: 2724862086706348419}
   m_Layer: 10
   m_Name: MortalObject
   m_TagString: Damagable
@@ -71,18 +70,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.37771016
---- !u!114 &2724862086706348419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2059096147296058214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2336615eb830b2d42a720b876c0ba542, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2949737110492163742
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,7 +126,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4231095833661398568}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.4, y: -1.44, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 39956250114264329}

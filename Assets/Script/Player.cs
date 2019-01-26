@@ -11,12 +11,14 @@ public class Player : MonoBehaviour
 		MOVE,
 		INTERACT,
 		DIE,
-		JUMP
+		JUMP,
+		SMALL_JUMP
 	}
 
 	[Header("Velocidade")]
 	public float moveSpeed = 10;
 	public float jumpForce = 100;
+	public float smallJumpForce = 70;
 	private float direction = 1;
 
 	[Header("Trigging")]
@@ -29,6 +31,8 @@ public class Player : MonoBehaviour
 	public LayerMask layerMaskObjects;
 	public Vector3 interactionPosition;
 	public float interactionRange;
+	private bool biting = false;
+	private InteragableObject interagableObj;
 
 	[Header("Visuais")]
 	public Transform graphicsRenderer;
@@ -42,49 +46,92 @@ public class Player : MonoBehaviour
 
 	void Update()
 	{
-		float horizontalAxis = Input.GetAxis("Horizontal");
-		Collider2D[] interactColliders = getCollidersAroundInteractPoint();
+		if (currentState != PlayerState.DIE) {
+			float horizontalAxis = Input.GetAxis("Horizontal");
+			Collider2D[] interactColliders = getCollidersAroundInteractPoint();
 
-		switch (currentState)
-		{
-			case PlayerState.IDDLE:
-				{
-					// Chamada das funções principais
-					Iddle();
-					// Gatilhos para mudar de estado
-					if (horizontalAxis != 0) ChangeState(PlayerState.MOVE);
-					if (Input.GetButton("Jump") && HasColliderBottom()) ChangeState(PlayerState.JUMP);
-					if (Input.GetButton("Fire1") && interactColliders.Length != 0) ChangeState(PlayerState.INTERACT);
-					break;
-				}
-			case PlayerState.MOVE:
-				{
-					// Chamada das funções principais
-					Move(horizontalAxis);
-					// Gatilhos para mudar de estado
-					if (horizontalAxis == 0) ChangeState(PlayerState.IDDLE);
-					if (Input.GetButton("Jump") && HasColliderBottom()) ChangeState(PlayerState.JUMP);
-					if (Input.GetButton("Fire1") && interactColliders.Length != 0) ChangeState(PlayerState.INTERACT);
-					break;
-				}
-			case PlayerState.JUMP:
-				{
-					// Chamada das funções principais
-					Jump();
-					// Gatilhos para mudar de estado
-					ChangeState(lastState);
-					break;
-				}
-			case PlayerState.INTERACT:
-				{
-					// Chamada das funções princiais
-					Interact(interactColliders);
-					// Gatilhos para mudar de estado
-					ChangeState(lastState);
-					break;
-				}
+			if (biting)
+			{
+				interagableObj.transform.position = transform.position + interactionPosition;
+				if (Input.GetButtonDown("Fire2")) DetachBitedObject();
+			}
+
+			switch (currentState)
+			{
+				case PlayerState.IDDLE:
+					{
+						// Chamada das funções principais
+						Iddle();
+						// Gatilhos para mudar de estado
+						if (horizontalAxis != 0) ChangeState(PlayerState.MOVE);
+						if (Input.GetButtonDown("Jump") && HasColliderBottom()) ChangeState(PlayerState.JUMP);
+						if (Input.GetButtonDown("Fire1") && interactColliders.Length != 0 && !biting) ChangeState(PlayerState.INTERACT);
+						if (Input.GetButtonDown("Fire2") && interactColliders.Length != 0 && !biting) Bite(interactColliders[0]);
+						break;
+					}
+				case PlayerState.MOVE:
+					{
+						// Chamada das funções principais
+						Move(horizontalAxis);
+						// Gatilhos para mudar de estado
+						if (horizontalAxis == 0) ChangeState(PlayerState.IDDLE);
+						if (Input.GetButtonDown("Jump") && HasColliderBottom()) ChangeState(PlayerState.JUMP);
+						if (Input.GetButtonDown("Fire1") && interactColliders.Length != 0 && !biting) ChangeState(PlayerState.INTERACT);
+						if (Input.GetButtonDown("Fire2") && interactColliders.Length != 0 && !biting) Bite(interactColliders[0]);
+						break;
+					}
+				case PlayerState.JUMP:
+					{
+						// Chamada das funções principais
+						Jump();
+						// Gatilhos para mudar de estado
+						ChangeState(lastState);
+						break;
+					}
+				case PlayerState.SMALL_JUMP:
+					{
+						// Chamada das funções principais
+						Jump();
+						// Gatilhos para mudar de estado
+						ChangeState(lastState);
+						break;
+					}
+				case PlayerState.INTERACT:
+					{
+						// Chamada das funções princiais
+						Interact(interactColliders);
+						// Gatilhos para mudar de estado
+						ChangeState(lastState);
+						break;
+					}
+			}
+			FlipDirection(horizontalAxis);
 		}
-		FlipDirection(horizontalAxis);
+	}
+
+	/// <summary>
+	/// Remove o objeto da boca do gato
+	/// </summary>
+	private void DetachBitedObject()
+	{
+		biting = false;
+		if (interagableObj) interagableObj.TogglePhysics(true);
+	}
+
+	/// <summary>
+	/// Adiciona um objeto a boca do gato para ser carregado
+	/// </summary>
+	/// <param name="collider">collider que será interagido</param>
+	private void Bite(Collider2D collider)
+	{
+		biting = true;
+		interagableObj = collider.GetComponent<InteragableObject>();
+		interagableObj.TogglePhysics(false);
+	}
+
+	private void OnTriggerEnter2D(Collider2D collider)
+	{
+		if (collider.tag == "Damagable") ChangeState(PlayerState.DIE);
 	}
 
 	#region Maquina de estado
@@ -127,7 +174,8 @@ public class Player : MonoBehaviour
 	/// <param name="horizontalMove">Movimento horizontal que será aplicado</param>
 	private void Move(float horizontalMove)
 	{
-		transform.Translate(horizontalMove * moveSpeed * Time.deltaTime, 0, 0);
+		float move = biting ? moveSpeed / 2 : moveSpeed;
+		transform.Translate(horizontalMove * move * Time.deltaTime, 0, 0);
 	}
 
 	/// <summary>
@@ -135,8 +183,9 @@ public class Player : MonoBehaviour
 	/// </summary>
 	private void Jump()
 	{
+		float force = biting ? jumpForce / 2 : jumpForce;
 		myRigidbody2D.velocity = new Vector2(myRigidbody2D.velocity.x, 0);
-		myRigidbody2D.AddForce(new Vector2(0, jumpForce * Time.deltaTime), ForceMode2D.Impulse);
+		myRigidbody2D.AddForce(new Vector2(0, force * Time.deltaTime), ForceMode2D.Impulse);
 	}
 
 	#endregion
