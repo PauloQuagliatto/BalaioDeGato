@@ -26,15 +26,10 @@ public class SoundController : MonoBehaviour
 	private void Awake()
 	{
 		instance = this;
-	}
-
-	void Start()
-    {
 		// Pegamos o audio source
 		audioSource = GetComponent<AudioSource>();
-    }
-
-
+	}
+	
 	/// <summary>
 	/// Reproduz um efeito sonoro a nível global
 	/// </summary>
