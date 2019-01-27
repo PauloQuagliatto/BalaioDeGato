@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 2088689931}
   - component: {fileID: 8765982027335692050}
   - component: {fileID: 8703505679274064807}
+  - component: {fileID: 1600881134488204020}
   m_Layer: 9
   m_Name: IAPlayer
   m_TagString: Interagable
@@ -99,9 +100,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd618cc0c5001ba43975c969a4bbaeb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxMoveDistance: 1.85
-  maxInteractDistance: 0.8
   currentState: 0
+  moveSpeed: 2
+  maxMoveDistance: 1.85
+  minRandomTime: 0
+  maxRandomTime: 2
+  layerMaskObjects:
+    serializedVersion: 2
+    m_Bits: 0
+  maxInteractDistance: 0.8
+  interactionPosition: {x: 0.8, y: 0.31, z: 0}
+  interactionRange: 0.45
 --- !u!58 &8765982027335692050
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -132,6 +141,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootable: 1
   force: {x: 500, y: 250}
+--- !u!58 &1600881134488204020
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416708563601242565}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.3485645
 --- !u!1 &4416708563669994378
 GameObject:
   m_ObjectHideFlags: 0
