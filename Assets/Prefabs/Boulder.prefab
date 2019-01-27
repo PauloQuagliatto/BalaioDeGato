@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 860671640313814424}
   - component: {fileID: 7214176037987853156}
   - component: {fileID: 7686502957031053123}
+  - component: {fileID: 1234597888729880303}
   m_Layer: 10
   m_Name: Boulder
   m_TagString: Damagable
@@ -49,7 +50,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 0e130545be5321646acb611551096b89, type: 2}
+  m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -118,3 +119,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1234597888729880303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059096147296058214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66f07bc36ca6b2941be6802514a59f5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
