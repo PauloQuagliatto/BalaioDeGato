@@ -60,60 +60,65 @@ public class IAController : MonoBehaviour
 
 	private void Update()
 	{
-		Collider2D[] interagableColliders = getCollidersAroundInteractPoint();
-
-		switch (currentState)
+		if (currentState != IAState.DIE)
 		{
-			case IAState.IDLE:
-				{
-					// Gatilhos para mudar de estado
-					if (targetTime <= Time.time) {
-						targetPosition = transform.position;
-						targetPosition.x = Random.Range(transform.position.x-maxMoveDistance, transform.position.x + maxMoveDistance);
-						FlipDirection();
-						UpdateTargetTime();
-						ChangeState(IAState.MOVING);
-					}
-					if (!interagableObject.physicsEnabled) ChangeState(IAState.BITED);
-					break;
-				}
-			case IAState.MOVING:
-				{
-					// Chamada das funções principais
-					Move();
-					// Gatilhos para mudar de estado
-					if (targetTime <= Time.time)
+			Collider2D[] interagableColliders = getCollidersAroundInteractPoint();
+
+			switch (currentState)
+			{
+				case IAState.IDLE:
 					{
-						if (interagableColliders.Length != 0 && Random.Range(0, 3) == 1)
+						// Gatilhos para mudar de estado
+						if (targetTime <= Time.time)
 						{
-							ChangeState(IAState.INTERACT);
-						} else
+							targetPosition = transform.position;
+							targetPosition.x = Random.Range(transform.position.x - maxMoveDistance, transform.position.x + maxMoveDistance);
+							FlipDirection();
+							UpdateTargetTime();
+							ChangeState(IAState.MOVING);
+						}
+						if (!interagableObject.physicsEnabled) ChangeState(IAState.BITED);
+						break;
+					}
+				case IAState.MOVING:
+					{
+						// Chamada das funções principais
+						Move();
+						// Gatilhos para mudar de estado
+						if (targetTime <= Time.time)
+						{
+							if (interagableColliders.Length != 0 && Random.Range(0, 3) == 1)
+							{
+								ChangeState(IAState.INTERACT);
+							}
+							else
+							{
+								UpdateTargetTime();
+								ChangeState(IAState.IDLE);
+							}
+						}
+						if (!interagableObject.physicsEnabled) ChangeState(IAState.BITED);
+						break;
+					}
+				case IAState.INTERACT:
+					{
+						// Chamada das funções principais
+						Interact(interagableColliders);
+						// Gatilhos para mudar de estado
+						UpdateTargetTime();
+						ChangeState(IAState.IDLE);
+						break;
+					}
+				case IAState.BITED:
+					{
+						if (interagableObject.physicsEnabled)
 						{
 							UpdateTargetTime();
 							ChangeState(IAState.IDLE);
 						}
+						break;
 					}
-					if (!interagableObject.physicsEnabled) ChangeState(IAState.BITED);
-					break;
-				}
-			case IAState.INTERACT:
-				{
-					// Chamada das funções principais
-					Interact(interagableColliders);
-					// Gatilhos para mudar de estado
-					UpdateTargetTime();
-					ChangeState(IAState.IDLE);
-					break;
-				}
-			case IAState.BITED:
-				{
-					if (interagableObject.physicsEnabled)
-					{
-						UpdateTargetTime();
-						ChangeState(IAState.IDLE);
-					}
-					break;
-				}
+			}
 		}
 	}
 
@@ -132,7 +137,10 @@ public class IAController : MonoBehaviour
 
 	private void OnTriggerEnter2D (Collider2D collider)
 	{
-		if (currentState == IAState.MOVING && collider.tag != "Ground") {
+		if (collider.tag == "Damagable")
+		{
+			ChangeState(IAState.DIE);
+		} else if (currentState == IAState.MOVING && collider.tag != "Ground") {
 			UpdateTargetTime();
 			ChangeState(IAState.IDLE);
 		}
