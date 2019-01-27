@@ -8,6 +8,7 @@ TagManager:
   - Damagable
   - Ground
   - Destroyable
+  - SecureArea
   layers:
   - Default
   - TransparentFX

@@ -36,14 +36,17 @@ public class Player : MonoBehaviour
 
 	private Rigidbody2D myRigidbody2D;
 
+	private GameController gameController;
+
 	private void Start()
 	{
+		gameController = GameController.instance;
 		myRigidbody2D = GetComponent<Rigidbody2D>();
 	}
 
 	void Update()
 	{
-		if (currentState != PlayerState.DIE) {
+		if (!gameController.gameOver && !gameController.gameWin && currentState != PlayerState.DIE) {
 			float horizontalAxis = Input.GetAxis("Horizontal");
 			Collider2D[] interactColliders = getCollidersAroundInteractPoint();
 
@@ -128,7 +131,11 @@ public class Player : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collider)
 	{
-		if (collider.tag == "Damagable") ChangeState(PlayerState.DIE);
+		if (collider.tag == "Damagable")
+		{
+			ChangeState(PlayerState.DIE);
+			GameController.instance.Killed();
+		}
 	}
 
 	#region Maquina de estado

@@ -44,9 +44,8 @@ GameObject:
   - component: {fileID: 2088689931}
   - component: {fileID: 8765982027335692050}
   - component: {fileID: 8703505679274064807}
-  - component: {fileID: 1600881134488204020}
   m_Layer: 9
-  m_Name: IAPlayer
+  m_Name: IACat
   m_TagString: Interagable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -140,23 +139,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootable: 1
-  force: {x: 50, y: 50}
---- !u!58 &1600881134488204020
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4416708563601242565}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.3485645
+  force: {x: 200, y: 100}
+  physicsEnabled: 1
 --- !u!1 &4416708563669994378
 GameObject:
   m_ObjectHideFlags: 0

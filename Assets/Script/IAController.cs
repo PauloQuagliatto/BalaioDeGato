@@ -34,6 +34,7 @@ public class IAController : MonoBehaviour
 	private Vector2 targetPosition = Vector2.zero;
 
 	private InteragableObject interagableObject;
+	private GameController gameController;
 
 	/// <summary>
 	/// Altera o estado da maquina de estados
@@ -46,6 +47,7 @@ public class IAController : MonoBehaviour
 
 	private void Start()
 	{
+		gameController = GameController.instance;
 		interagableObject = GetComponent<InteragableObject>();
 		UpdateTargetTime();
 	}
@@ -60,7 +62,7 @@ public class IAController : MonoBehaviour
 
 	private void Update()
 	{
-		if (currentState != IAState.DIE)
+		if (!gameController.gameOver && !gameController.gameWin && currentState != IAState.DIE)
 		{
 			Collider2D[] interagableColliders = getCollidersAroundInteractPoint();
 
@@ -87,7 +89,8 @@ public class IAController : MonoBehaviour
 						// Gatilhos para mudar de estado
 						if (targetTime <= Time.time)
 						{
-							if (interagableColliders.Length != 0 && Random.Range(0, 3) == 1)
+							int randomNumber = Random.Range(0, 2);
+							if (interagableColliders.Length != 0 && (randomNumber == 0 || randomNumber == 1))
 							{
 								ChangeState(IAState.INTERACT);
 							}
@@ -135,14 +138,33 @@ public class IAController : MonoBehaviour
 		}
 	}
 
-	private void OnTriggerEnter2D (Collider2D collider)
+	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collider.tag == "Damagable")
+		if (collision.gameObject.tag == "Damagable")
 		{
+			GameController.instance.Killed();
 			ChangeState(IAState.DIE);
-		} else if (currentState == IAState.MOVING && collider.tag != "Ground") {
+		}
+		else if (currentState == IAState.MOVING && collision.gameObject.tag != "Ground")
+		{
 			UpdateTargetTime();
 			ChangeState(IAState.IDLE);
+		}
+	}
+
+	private void OnTriggerEnter2D (Collider2D collider)
+	{
+		if(collider.tag == "SecureArea")
+		{
+			gameController.AddCatToSecurePoint();
+		}
+	}
+
+	private void OnTriggerExit2D(Collider2D collider)
+	{
+		if (collider.tag == "SecureArea")
+		{
+			gameController.RemoveCatFromSecurePoint();
 		}
 	}
 
