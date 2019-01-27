@@ -154,6 +154,15 @@ public class Player : MonoBehaviour
 		}
 	}
 
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (collision.gameObject.tag == "Damagable")
+		{
+			ChangeState(PlayerState.DIE);
+			GameController.instance.Killed();
+		}
+	}
+
 	#region Maquina de estado
 
 	/// <summary>
@@ -226,8 +235,7 @@ public class Player : MonoBehaviour
 	/// <returns>Se o player está no chão ou não</returns>
 	private bool HasColliderBottom()
 	{
-		Vector3 targetPosition = transform.position - (transform.up * rayDistance);
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, targetPosition, rayDistance, layer);
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, rayDistance, layer);
 
 		return hit.collider != null;
 	}
