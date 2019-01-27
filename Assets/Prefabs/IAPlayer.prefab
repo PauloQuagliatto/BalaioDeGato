@@ -107,9 +107,9 @@ MonoBehaviour:
   maxRandomTime: 2
   layerMaskObjects:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   maxInteractDistance: 0.8
-  interactionPosition: {x: 0.8, y: 0.31, z: 0}
+  interactionPosition: {x: 0.8, y: 0.24, z: 0}
   interactionRange: 0.45
 --- !u!58 &8765982027335692050
 CircleCollider2D:
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootable: 1
-  force: {x: 500, y: 250}
+  force: {x: 50, y: 50}
 --- !u!58 &1600881134488204020
 CircleCollider2D:
   m_ObjectHideFlags: 0

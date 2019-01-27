@@ -29,6 +29,7 @@ public class IAController : MonoBehaviour
 	public Vector3 interactionPosition;
 	public float interactionRange = 1;
 
+	private float direction = 1;
 	private float targetTime = 0;
 	private Vector2 targetPosition = Vector2.zero;
 
@@ -56,6 +57,7 @@ public class IAController : MonoBehaviour
 
 	private void Update()
 	{
+		Collider2D[] interagableColliders = getCollidersAroundInteractPoint();
 		switch (currentState)
 		{
 			case IAState.IDLE:
@@ -75,6 +77,7 @@ public class IAController : MonoBehaviour
 					// Chamada das funções principais
 					Move();
 					// Gatilhos para mudar de estado
+					if (interagableColliders.Length != 0) ChangeState(IAState.INTERACT);
 					if (targetTime <= Time.time)
 					{
 						UpdateTargetTime();
@@ -82,6 +85,28 @@ public class IAController : MonoBehaviour
 					}
 					break;
 				}
+			case IAState.INTERACT:
+				{
+					// Chamada das funções principais
+					Interact(interagableColliders);
+					// Gatilhos para mudar de estado
+					UpdateTargetTime();
+					ChangeState(IAState.IDLE);
+					break;
+				}
+		}
+	}
+
+	/// <summary>
+	/// Aplica um efeito nos elementos
+	/// </summary>
+	private void Interact(Collider2D[] colliders)
+	{
+		foreach (Collider2D collider in colliders)
+		{
+			InteragableObject interagableObject = collider.GetComponent<InteragableObject>();
+			// Aplicamos uma força
+			interagableObject.ApplyForce(transform.position + interactionPosition, direction);
 		}
 	}
 
@@ -107,7 +132,7 @@ public class IAController : MonoBehaviour
 	/// </summary>
 	private void FlipDirection()
 	{
-		int direction = 1;
+		direction = 1;
 		if (targetPosition.x < transform.position.x)
 			direction = -1;
 
