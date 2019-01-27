@@ -3429,7 +3429,7 @@ PrefabInstance:
     - target: {fileID: 4416708563601242571, guid: 734bb090ac90a4246a964eeab064450e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.210891
+      value: -4.36
       objectReference: {fileID: 0}
     - target: {fileID: 4416708563601242571, guid: 734bb090ac90a4246a964eeab064450e,
         type: 3}
@@ -3617,9 +3617,10 @@ GameObject:
   - component: {fileID: 1526764329}
   - component: {fileID: 1526764332}
   - component: {fileID: 1526764333}
+  - component: {fileID: 1526764334}
   m_Layer: 0
   m_Name: Main Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3682,7 +3683,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1526764328}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -36.12, y: -2.85, z: -9.938454}
+  m_LocalPosition: {x: 0, y: 0, z: -9.938454}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3704,7 +3705,7 @@ MonoBehaviour:
   - TargetTransform: {fileID: 1115502834}
     TargetInfluenceH: 1
     TargetInfluenceV: 1
-    TargetOffset: {x: 0, y: 1.4}
+    TargetOffset: {x: 0, y: 1.5}
   CenterTargetOnStart: 1
   Axis: 0
   UpdateType: 0
@@ -3738,10 +3739,26 @@ MonoBehaviour:
   TransitionSmoothness: 0.6
   MaintainInfluenceOnStop: 1
   MovementThreshold: {x: 0, y: 0}
-  LeftFocus: 0.361
-  RightFocus: 0.361
-  TopFocus: 0.25
-  BottomFocus: 0.25
+  LeftFocus: 0.35
+  RightFocus: 0.35
+  TopFocus: 0.29
+  BottomFocus: 0.29
+--- !u!114 &1526764334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526764328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d86bf0beadb1248c2a5d9f2fe72189fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProCamera2D: {fileID: 1526764332}
+  BoundariesLayerMask:
+    serializedVersion: 2
+    m_Bits: 3
 --- !u!1 &1548106179
 GameObject:
   m_ObjectHideFlags: 0
@@ -3916,6 +3933,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: arame
+      objectReference: {fileID: 0}
+    - target: {fileID: 5849998545305696926, guid: 117be70c26faf1e4f905735ca29d9030,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5849998545305696923, guid: 117be70c26faf1e4f905735ca29d9030,
         type: 3}
