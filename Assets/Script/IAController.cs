@@ -34,6 +34,7 @@ public class IAController : MonoBehaviour
 	private Vector2 targetPosition = Vector2.zero;
 
 	private InteragableObject interagableObject;
+	private GameController gameController;
 
 	/// <summary>
 	/// Altera o estado da maquina de estados
@@ -46,6 +47,7 @@ public class IAController : MonoBehaviour
 
 	private void Start()
 	{
+		gameController = GameController.instance;
 		interagableObject = GetComponent<InteragableObject>();
 		UpdateTargetTime();
 	}
@@ -60,7 +62,7 @@ public class IAController : MonoBehaviour
 
 	private void Update()
 	{
-		if (currentState != IAState.DIE)
+		if (!gameController.gameOver && currentState != IAState.DIE)
 		{
 			Collider2D[] interagableColliders = getCollidersAroundInteractPoint();
 
@@ -139,6 +141,7 @@ public class IAController : MonoBehaviour
 	{
 		if (collider.tag == "Damagable")
 		{
+			GameController.instance.Killed();
 			ChangeState(IAState.DIE);
 		} else if (currentState == IAState.MOVING && collider.tag != "Ground") {
 			UpdateTargetTime();
