@@ -31,6 +31,8 @@ public class IAController : MonoBehaviour
 
 	public Animator animator;
 
+	private Player player;
+
 	private float direction = 1;
 	private float targetTime = 0;
 	private Vector2 targetPosition = Vector2.zero;
@@ -52,6 +54,7 @@ public class IAController : MonoBehaviour
 
 	private void Start()
 	{
+		player = Player.instance;
 		gameController = GameController.instance;
 		interagableObject = GetComponent<InteragableObject>();
 		myRigidbody2D = GetComponent<Rigidbody2D>();
@@ -124,6 +127,8 @@ public class IAController : MonoBehaviour
 					}
 				case IAState.BITED:
 					{
+						direction = player.direction;
+						transform.localScale = new Vector3(direction, 1, 1);
 						animator.SetTrigger("biting");
 						if (interagableObject.physicsEnabled)
 						{
