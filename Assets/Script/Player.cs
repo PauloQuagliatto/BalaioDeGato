@@ -34,9 +34,6 @@ public class Player : MonoBehaviour
 	private bool biting = false;
 	private InteragableObject interagableObj;
 
-	[Header("Visuais")]
-	public Transform graphicsRenderer;
-
 	private Rigidbody2D myRigidbody2D;
 
 	private void Start()
