@@ -7,13 +7,14 @@ using UnityEngine;
 public class InteragableObject : MonoBehaviour
 {
 	public bool shootable;
-	private Collider2D myCollider2D;
+	private Collider2D[] myColliders2D;
 	private Rigidbody2D myRigidbody2D;
 	public Vector2 force;
+	public bool physicsEnabled = true;
 
 	void Start()
 	{
-		myCollider2D = GetComponent<Collider2D>();
+		myColliders2D = GetComponents<Collider2D>();
 		myRigidbody2D = GetComponent<Rigidbody2D>();
 	}
 
@@ -23,7 +24,9 @@ public class InteragableObject : MonoBehaviour
 	/// <param name="value"></param>
 	public void TogglePhysics(bool value)
 	{
-		myCollider2D.enabled = value;
+		physicsEnabled = value;
+		foreach(Collider2D collider2D in myColliders2D)
+			collider2D.enabled = value;
 		if (value) myRigidbody2D.velocity = Vector2.zero;
 		myRigidbody2D.isKinematic = !value;
 	}

@@ -776,6 +776,16 @@ PrefabInstance:
       propertyPath: jumpForce
       value: 300
       objectReference: {fileID: 0}
+    - target: {fileID: 4416708563601242564, guid: 734bb090ac90a4246a964eeab064450e,
+        type: 3}
+      propertyPath: interactionPosition.y
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4416708563601242564, guid: 734bb090ac90a4246a964eeab064450e,
+        type: 3}
+      propertyPath: interactionRange
+      value: 0.58
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 734bb090ac90a4246a964eeab064450e, type: 3}
 --- !u!1001 &5681908947451118605

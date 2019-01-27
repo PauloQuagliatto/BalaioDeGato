@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(InteragableObject))]
 public class IAController : MonoBehaviour
 {
-
 	public enum IAState
 	{
 		IDLE,
@@ -33,6 +33,8 @@ public class IAController : MonoBehaviour
 	private float targetTime = 0;
 	private Vector2 targetPosition = Vector2.zero;
 
+	private InteragableObject interagableObject;
+
 	/// <summary>
 	/// Altera o estado da maquina de estados
 	/// </summary>
@@ -44,6 +46,7 @@ public class IAController : MonoBehaviour
 
 	private void Start()
 	{
+		interagableObject = GetComponent<InteragableObject>();
 		UpdateTargetTime();
 	}
 
@@ -58,6 +61,7 @@ public class IAController : MonoBehaviour
 	private void Update()
 	{
 		Collider2D[] interagableColliders = getCollidersAroundInteractPoint();
+
 		switch (currentState)
 		{
 			case IAState.IDLE:
@@ -70,6 +74,7 @@ public class IAController : MonoBehaviour
 						UpdateTargetTime();
 						ChangeState(IAState.MOVING);
 					}
+					if (!interagableObject.physicsEnabled) ChangeState(IAState.BITED);
 					break;
 				}
 			case IAState.MOVING:
@@ -77,12 +82,18 @@ public class IAController : MonoBehaviour
 					// Chamada das funções principais
 					Move();
 					// Gatilhos para mudar de estado
-					if (interagableColliders.Length != 0) ChangeState(IAState.INTERACT);
 					if (targetTime <= Time.time)
 					{
-						UpdateTargetTime();
-						ChangeState(IAState.IDLE);
+						if (interagableColliders.Length != 0 && Random.Range(0, 3) == 1)
+						{
+							ChangeState(IAState.INTERACT);
+						} else
+						{
+							UpdateTargetTime();
+							ChangeState(IAState.IDLE);
+						}
 					}
+					if (!interagableObject.physicsEnabled) ChangeState(IAState.BITED);
 					break;
 				}
 			case IAState.INTERACT:
@@ -92,6 +103,15 @@ public class IAController : MonoBehaviour
 					// Gatilhos para mudar de estado
 					UpdateTargetTime();
 					ChangeState(IAState.IDLE);
+					break;
+				}
+			case IAState.BITED:
+				{
+					if (interagableObject.physicsEnabled)
+					{
+						UpdateTargetTime();
+						ChangeState(IAState.IDLE);
+					}
 					break;
 				}
 		}
