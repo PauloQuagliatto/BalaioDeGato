@@ -112,12 +112,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &296763914 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4416708563669994377, guid: 734bb090ac90a4246a964eeab064450e,
-    type: 3}
-  m_PrefabInstance: {fileID: 4416708563854886755}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &478338851
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,7 +310,7 @@ PrefabInstance:
     - target: {fileID: 4416708563601242565, guid: be7cb48c243ba2a42907b4415a4b0391,
         type: 3}
       propertyPath: m_Name
-      value: IAPlayer (1)
+      value: IACat2
       objectReference: {fileID: 0}
     - target: {fileID: 4416708563601242571, guid: be7cb48c243ba2a42907b4415a4b0391,
         type: 3}
@@ -483,7 +477,7 @@ PrefabInstance:
     - target: {fileID: 4416708563601242565, guid: be7cb48c243ba2a42907b4415a4b0391,
         type: 3}
       propertyPath: m_Name
-      value: IAPlayer (2)
+      value: IACat3
       objectReference: {fileID: 0}
     - target: {fileID: 4416708563601242571, guid: be7cb48c243ba2a42907b4415a4b0391,
         type: 3}
@@ -566,7 +560,7 @@ PrefabInstance:
     - target: {fileID: 4416708563601242565, guid: be7cb48c243ba2a42907b4415a4b0391,
         type: 3}
       propertyPath: m_Name
-      value: IAPlayer
+      value: IACat
       objectReference: {fileID: 0}
     - target: {fileID: 4416708563601242571, guid: be7cb48c243ba2a42907b4415a4b0391,
         type: 3}
@@ -760,31 +754,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4416708563601242564, guid: 734bb090ac90a4246a964eeab064450e,
-        type: 3}
-      propertyPath: graphicsRenderer
-      value: 
-      objectReference: {fileID: 296763914}
-    - target: {fileID: 4416708563601242564, guid: 734bb090ac90a4246a964eeab064450e,
-        type: 3}
-      propertyPath: rayDistance
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4416708563601242564, guid: 734bb090ac90a4246a964eeab064450e,
-        type: 3}
-      propertyPath: jumpForce
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 4416708563601242564, guid: 734bb090ac90a4246a964eeab064450e,
-        type: 3}
-      propertyPath: interactionPosition.y
-      value: 0.12
-      objectReference: {fileID: 0}
-    - target: {fileID: 4416708563601242564, guid: 734bb090ac90a4246a964eeab064450e,
-        type: 3}
-      propertyPath: interactionRange
-      value: 0.58
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 734bb090ac90a4246a964eeab064450e, type: 3}
