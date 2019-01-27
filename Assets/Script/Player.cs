@@ -39,6 +39,8 @@ public class Player : MonoBehaviour
 	private bool biting = false;
 	private InteragableObject interagableObj;
 
+	public Animator myAnimator;
+
 	private Rigidbody2D myRigidbody2D;
 
 	private GameController gameController;
@@ -72,6 +74,7 @@ public class Player : MonoBehaviour
 					{
 						// Chamada das funções principais
 						Idle();
+						myAnimator.SetTrigger("idle");
 						// Gatilhos para mudar de estado
 						if (horizontalAxis != 0) ChangeState(PlayerState.MOVE);
 						if (Input.GetButtonDown("Jump") && HasColliderBottom()) ChangeState(PlayerState.JUMP);
@@ -83,6 +86,7 @@ public class Player : MonoBehaviour
 					{
 						// Chamada das funções principais
 						Move(horizontalAxis);
+						myAnimator.SetTrigger("walking");
 						// Gatilhos para mudar de estado
 						if (horizontalAxis == 0) ChangeState(PlayerState.IDLE);
 						if (Input.GetButtonDown("Jump") && HasColliderBottom()) ChangeState(PlayerState.JUMP);
@@ -94,6 +98,7 @@ public class Player : MonoBehaviour
 					{
 						// Chamada das funções principais
 						Jump();
+						myAnimator.SetTrigger("idle");
 						// Gatilhos para mudar de estado
 						ChangeState(lastState);
 						break;
@@ -110,6 +115,7 @@ public class Player : MonoBehaviour
 					{
 						// Chamada das funções princiais
 						Interact(interactColliders);
+						myAnimator.SetTrigger("interact");
 						// Gatilhos para mudar de estado
 						ChangeState(lastState);
 						break;
