@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 {
 	public enum PlayerState
 	{
-		IDDLE,
+		IDLE,
 		MOVE,
 		INTERACT,
 		DIE,
@@ -22,8 +22,8 @@ public class Player : MonoBehaviour
 	private float direction = 1;
 
 	[Header("Trigging")]
-	public PlayerState currentState = PlayerState.IDDLE;
-	private PlayerState lastState = PlayerState.IDDLE;
+	public PlayerState currentState = PlayerState.IDLE;
+	private PlayerState lastState = PlayerState.IDLE;
 	public LayerMask layer;
 	public float rayDistance = 1.18f;
 
@@ -58,10 +58,10 @@ public class Player : MonoBehaviour
 
 			switch (currentState)
 			{
-				case PlayerState.IDDLE:
+				case PlayerState.IDLE:
 					{
 						// Chamada das funções principais
-						Iddle();
+						Idle();
 						// Gatilhos para mudar de estado
 						if (horizontalAxis != 0) ChangeState(PlayerState.MOVE);
 						if (Input.GetButtonDown("Jump") && HasColliderBottom()) ChangeState(PlayerState.JUMP);
@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
 						// Chamada das funções principais
 						Move(horizontalAxis);
 						// Gatilhos para mudar de estado
-						if (horizontalAxis == 0) ChangeState(PlayerState.IDDLE);
+						if (horizontalAxis == 0) ChangeState(PlayerState.IDLE);
 						if (Input.GetButtonDown("Jump") && HasColliderBottom()) ChangeState(PlayerState.JUMP);
 						if (Input.GetButtonDown("Fire1") && interactColliders.Length != 0 && !biting) ChangeState(PlayerState.INTERACT);
 						if (Input.GetButtonDown("Fire2") && interactColliders.Length != 0 && !biting) Bite(interactColliders[0]);
@@ -160,10 +160,10 @@ public class Player : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Estado de iddle da maquina de estados, aqui o jogador está totalmente parado
+	/// Estado de idle da maquina de estados, aqui o jogador está totalmente parado
 	/// aguardando por inputs para se mover
 	/// </summary>
-	private void Iddle()
+	private void Idle()
 	{
 		// TODO - aplicar animação e funções de idle aqui
 	}
