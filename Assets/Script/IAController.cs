@@ -40,8 +40,7 @@ public class IAController : MonoBehaviour
 	private InteragableObject interagableObject;
 	private GameController gameController;
 
-	private Rigidbody2D myRigidbody2D;
-	private Collider2D myCollider2D;
+	private SoundController soundController;
 
 	/// <summary>
 	/// Altera o estado da maquina de estados
@@ -55,10 +54,9 @@ public class IAController : MonoBehaviour
 	private void Start()
 	{
 		player = Player.instance;
+		soundController = SoundController.instance;
 		gameController = GameController.instance;
 		interagableObject = GetComponent<InteragableObject>();
-		myRigidbody2D = GetComponent<Rigidbody2D>();
-		myCollider2D = GetComponent<Collider2D>();
 		UpdateTargetTime();
 	}
 
@@ -117,9 +115,10 @@ public class IAController : MonoBehaviour
 					}
 				case IAState.INTERACT:
 					{
-						animator.SetTrigger("interacting");
 						// Chamada das funções principais
+						animator.SetTrigger("interacting");
 						Interact(interagableColliders);
+						soundController.PlaySound(SoundController.Sound.INTERACT);
 						// Gatilhos para mudar de estado
 						UpdateTargetTime();
 						ChangeState(IAState.IDLE);
@@ -156,14 +155,12 @@ public class IAController : MonoBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collision.gameObject.tag == "Damagable")
+		if (collision.gameObject.tag == "Damagable" && currentState != IAState.DIE)
 		{
 			GameController.instance.Killed();
 			animator.SetTrigger("die");
-			myRigidbody2D.velocity = Vector2.zero;
-			myRigidbody2D.isKinematic = true;
-			myCollider2D.enabled = false;
 			ChangeState(IAState.DIE);
+			soundController.PlaySound(SoundController.Sound.KILLED);
 		}
 		else if (currentState == IAState.MOVING && collision.gameObject.tag != "Ground")
 		{
