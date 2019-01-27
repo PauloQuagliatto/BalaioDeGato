@@ -17,6 +17,7 @@ public class SoundController : MonoBehaviour
 	public AudioClip[] interact;
 
 	private AudioSource audioSource;
+	public AudioSource musicAudioSource;
 
 	/// <summary>
 	/// Instancia atual do SoundController
@@ -51,5 +52,10 @@ public class SoundController : MonoBehaviour
 					break;
 				}
 		}
+	}
+
+	public void StopMusic()
+	{
+		musicAudioSource.Stop();
 	}
 }
