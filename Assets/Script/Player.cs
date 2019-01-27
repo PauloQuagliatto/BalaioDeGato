@@ -145,7 +145,16 @@ public class Player : MonoBehaviour
 		interagableObj.TogglePhysics(false);
 	}
 
-	private void OnTriggerEnter2D(Collider2D collider)
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Damagable")
+        {
+            ChangeState(PlayerState.DIE);
+            GameController.instance.Killed();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collider)
 	{
 		if (collider.tag == "Damagable")
 		{

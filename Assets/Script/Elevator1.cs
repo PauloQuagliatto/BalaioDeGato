@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Elevator : MonoBehaviour
+public class Elevator1 : MonoBehaviour
 {
     public bool status=true;
     // Start is called before the first frame update
