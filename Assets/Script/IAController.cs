@@ -29,12 +29,17 @@ public class IAController : MonoBehaviour
 	public Vector3 interactionPosition;
 	public float interactionRange = 1;
 
+	public Animator animator;
+
 	private float direction = 1;
 	private float targetTime = 0;
 	private Vector2 targetPosition = Vector2.zero;
 
 	private InteragableObject interagableObject;
 	private GameController gameController;
+
+	private Rigidbody2D myRigidbody2D;
+	private Collider2D myCollider2D;
 
 	/// <summary>
 	/// Altera o estado da maquina de estados
@@ -49,6 +54,8 @@ public class IAController : MonoBehaviour
 	{
 		gameController = GameController.instance;
 		interagableObject = GetComponent<InteragableObject>();
+		myRigidbody2D = GetComponent<Rigidbody2D>();
+		myCollider2D = GetComponent<Collider2D>();
 		UpdateTargetTime();
 	}
 
@@ -71,6 +78,7 @@ public class IAController : MonoBehaviour
 				case IAState.IDLE:
 					{
 						// Gatilhos para mudar de estado
+						animator.SetTrigger("idle");
 						if (targetTime <= Time.time)
 						{
 							targetPosition = transform.position;
@@ -86,6 +94,7 @@ public class IAController : MonoBehaviour
 					{
 						// Chamada das funções principais
 						Move();
+						animator.SetTrigger("moving");
 						// Gatilhos para mudar de estado
 						if (targetTime <= Time.time)
 						{
@@ -105,6 +114,7 @@ public class IAController : MonoBehaviour
 					}
 				case IAState.INTERACT:
 					{
+						animator.SetTrigger("interacting");
 						// Chamada das funções principais
 						Interact(interagableColliders);
 						// Gatilhos para mudar de estado
@@ -114,6 +124,7 @@ public class IAController : MonoBehaviour
 					}
 				case IAState.BITED:
 					{
+						animator.SetTrigger("biting");
 						if (interagableObject.physicsEnabled)
 						{
 							UpdateTargetTime();
@@ -143,6 +154,10 @@ public class IAController : MonoBehaviour
 		if (collision.gameObject.tag == "Damagable")
 		{
 			GameController.instance.Killed();
+			animator.SetTrigger("die");
+			myRigidbody2D.velocity = Vector2.zero;
+			myRigidbody2D.isKinematic = true;
+			myCollider2D.enabled = false;
 			ChangeState(IAState.DIE);
 		}
 		else if (currentState == IAState.MOVING && collision.gameObject.tag != "Ground")
