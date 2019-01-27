@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  jumpForce: 150
+  jumpForce: 300
   smallJumpForce: 70
   currentState: 0
   layer:
@@ -246,9 +246,8 @@ MonoBehaviour:
   layerMaskObjects:
     serializedVersion: 2
     m_Bits: 512
-  interactionPosition: {x: 0.82, y: 0, z: 0}
-  interactionRange: 0.28
-  graphicsRenderer: {fileID: 4416708563669994376}
+  interactionPosition: {x: 0.82, y: 0.12, z: 0}
+  interactionRange: 0.58
 --- !u!50 &4416708563601242570
 Rigidbody2D:
   serializedVersion: 4
