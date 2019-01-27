@@ -45,6 +45,7 @@ public class GameController : MonoBehaviour
 		{
 			gameWin = true;
 			gameWinPanel.SetActive(true);
+			SoundController.instance.StopMusic();
 		}
 	}
 

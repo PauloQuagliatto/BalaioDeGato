@@ -8,15 +8,16 @@ public class SoundController : MonoBehaviour
 
 	public enum Sound
 	{
-		JUMP,
-		DEAD
+		KILLED,
+		INTERACT
 	}
 
 	[Header("Audio clips do player")]
-	public AudioClip[] playerJump;
-	public AudioClip[] playerDead;
+	public AudioClip[] killed;
+	public AudioClip[] interact;
 
 	private AudioSource audioSource;
+	public AudioSource musicAudioSource;
 
 	/// <summary>
 	/// Instancia atual do SoundController
@@ -38,18 +39,23 @@ public class SoundController : MonoBehaviour
 	{
 		switch (soundType)
 		{
-			case Sound.JUMP:
+			case Sound.KILLED:
 				{
-					int randomizedIndex = Random.Range(0, playerJump.Length);
-					audioSource.PlayOneShot(playerJump[randomizedIndex]);
+					int randomizedIndex = Random.Range(0, killed.Length);
+					audioSource.PlayOneShot(killed[randomizedIndex]);
 					break;
 				}
-			case Sound.DEAD:
+			case Sound.INTERACT:
 				{
-					int randomizedIndex = Random.Range(0, playerDead.Length);
-					audioSource.PlayOneShot(playerDead[randomizedIndex]);
+					int randomizedIndex = Random.Range(0, interact.Length);
+					audioSource.PlayOneShot(interact[randomizedIndex]);
 					break;
 				}
 		}
+	}
+
+	public void StopMusic()
+	{
+		musicAudioSource.Stop();
 	}
 }

@@ -29,12 +29,18 @@ public class IAController : MonoBehaviour
 	public Vector3 interactionPosition;
 	public float interactionRange = 1;
 
+	public Animator animator;
+
+	private Player player;
+
 	private float direction = 1;
 	private float targetTime = 0;
 	private Vector2 targetPosition = Vector2.zero;
 
 	private InteragableObject interagableObject;
 	private GameController gameController;
+
+	private SoundController soundController;
 
 	/// <summary>
 	/// Altera o estado da maquina de estados
@@ -47,6 +53,8 @@ public class IAController : MonoBehaviour
 
 	private void Start()
 	{
+		player = Player.instance;
+		soundController = SoundController.instance;
 		gameController = GameController.instance;
 		interagableObject = GetComponent<InteragableObject>();
 		UpdateTargetTime();
@@ -71,6 +79,7 @@ public class IAController : MonoBehaviour
 				case IAState.IDLE:
 					{
 						// Gatilhos para mudar de estado
+						animator.SetTrigger("idle");
 						if (targetTime <= Time.time)
 						{
 							targetPosition = transform.position;
@@ -86,6 +95,7 @@ public class IAController : MonoBehaviour
 					{
 						// Chamada das funções principais
 						Move();
+						animator.SetTrigger("moving");
 						// Gatilhos para mudar de estado
 						if (targetTime <= Time.time)
 						{
@@ -106,7 +116,9 @@ public class IAController : MonoBehaviour
 				case IAState.INTERACT:
 					{
 						// Chamada das funções principais
+						animator.SetTrigger("interacting");
 						Interact(interagableColliders);
+						soundController.PlaySound(SoundController.Sound.INTERACT);
 						// Gatilhos para mudar de estado
 						UpdateTargetTime();
 						ChangeState(IAState.IDLE);
@@ -114,6 +126,9 @@ public class IAController : MonoBehaviour
 					}
 				case IAState.BITED:
 					{
+						direction = player.direction;
+						transform.localScale = new Vector3(direction, 1, 1);
+						animator.SetTrigger("biting");
 						if (interagableObject.physicsEnabled)
 						{
 							UpdateTargetTime();
@@ -140,10 +155,12 @@ public class IAController : MonoBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collision.gameObject.tag == "Damagable")
+		if (collision.gameObject.tag == "Damagable" && currentState != IAState.DIE)
 		{
 			GameController.instance.Killed();
+			animator.SetTrigger("die");
 			ChangeState(IAState.DIE);
+			soundController.PlaySound(SoundController.Sound.KILLED);
 		}
 		else if (currentState == IAState.MOVING && collision.gameObject.tag != "Ground")
 		{

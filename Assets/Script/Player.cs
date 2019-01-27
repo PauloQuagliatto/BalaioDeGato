@@ -5,6 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
+
+	public static Player instance;
+
 	public enum PlayerState
 	{
 		IDLE,
@@ -19,7 +22,9 @@ public class Player : MonoBehaviour
 	public float moveSpeed = 10;
 	public float jumpForce = 100;
 	public float smallJumpForce = 70;
-	private float direction = 1;
+
+	[HideInInspector]
+	public float direction = 1;
 
 	[Header("Trigging")]
 	public PlayerState currentState = PlayerState.IDLE;
@@ -37,6 +42,11 @@ public class Player : MonoBehaviour
 	private Rigidbody2D myRigidbody2D;
 
 	private GameController gameController;
+
+	private void Awake()
+	{
+		instance = this;
+	}
 
 	private void Start()
 	{
