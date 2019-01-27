@@ -62,7 +62,7 @@ public class IAController : MonoBehaviour
 
 	private void Update()
 	{
-		if (!gameController.gameOver && currentState != IAState.DIE)
+		if (!gameController.gameOver && !gameController.gameWin && currentState != IAState.DIE)
 		{
 			Collider2D[] interagableColliders = getCollidersAroundInteractPoint();
 
@@ -146,6 +146,19 @@ public class IAController : MonoBehaviour
 		} else if (currentState == IAState.MOVING && collider.tag != "Ground") {
 			UpdateTargetTime();
 			ChangeState(IAState.IDLE);
+		}
+
+		if(collider.tag == "SecureArea")
+		{
+			gameController.AddCatToSecurePoint();
+		}
+	}
+
+	private void OnTriggerExit2D(Collider2D collider)
+	{
+		if (collider.tag == "SecureArea")
+		{
+			gameController.RemoveCatFromSecurePoint();
 		}
 	}
 

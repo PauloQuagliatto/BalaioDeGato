@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
 
 	void Update()
 	{
-		if (!gameController.gameOver && currentState != PlayerState.DIE) {
+		if (!gameController.gameOver && !gameController.gameWin && currentState != PlayerState.DIE) {
 			float horizontalAxis = Input.GetAxis("Horizontal");
 			Collider2D[] interactColliders = getCollidersAroundInteractPoint();
 

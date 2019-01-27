@@ -10,10 +10,15 @@ public class GameController : MonoBehaviour
 	public GameObject gameOverPanel;
 	public GameObject gameWinPanel;
 
-	private bool gameWin = false;
 
 	[HideInInspector]
 	public bool gameOver = false;
+	[HideInInspector]
+	public bool gameWin = false;
+
+	public int catsToWin = 3;
+
+	private int catsInSecurePoint;
 
 	private void Awake()
 	{
@@ -31,6 +36,21 @@ public class GameController : MonoBehaviour
 			gameOver = true;
 			gameOverPanel.SetActive(true);
 		}
+	}
+
+	public void AddCatToSecurePoint()
+	{
+		catsInSecurePoint++;
+		if(catsInSecurePoint == catsToWin)
+		{
+			gameWin = true;
+			gameWinPanel.SetActive(true);
+		}
+	}
+
+	public void RemoveCatFromSecurePoint()
+	{
+		catsInSecurePoint--;
 	}
 
 	/// <summary>
